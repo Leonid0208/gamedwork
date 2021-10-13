@@ -39,12 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    'gamedwork',
     'frontend',
     'rest_framework',
     'accounts',
     'allauth',
     'allauth.account',
+    'profile_user',
+    'course'
 ]
 
 MIDDLEWARE = [
@@ -138,4 +139,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/accounts/logout'

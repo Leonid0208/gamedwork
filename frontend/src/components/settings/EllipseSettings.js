@@ -1,14 +1,21 @@
-import React from "react";
-import {Group} from "react-konva";
+import React, {useRef} from "react";
+import {Circle, Group, Text} from "react-konva";
 import {Html} from "react-konva-utils";
 import {style} from "./common/style";
-import {mainWidth} from "../functions/Consts";
+import {mainWidth, settingsWidth} from "../functions/Consts";
+import {editColorSettings, editListSettings, editTextSettings} from "../functions/Functions";
+import TextAndColor from "./common/TextAndColor";
+import TextAndTextarea from "./common/TextAndTextarea";
 
 function EllipseSettings(props) {
 
     const selectedShape = props.getGlob.get('selectedShape');
     const ellipses = props.getElem.get('ellipse');
     const setEllipses = props.setElem.get('ellipse');
+
+    const radiusXRef = useRef();
+    const radiusYRef = useRef();
+    const colorRef = useRef();
 
     return (
         <React.Fragment>
@@ -17,54 +24,34 @@ function EllipseSettings(props) {
                 y={60}
                 width={mainWidth * 0.1 - 16}
             >
-                <Html>
-                    <div style={style.common}>
-                        <div style={style.half}>
-                            <p style={style.text}>Размер горизонтального радиуса:</p>
-                        </div>
-
-                        <div style={style.half}>
-                            <textarea style={style.textarea} onChange={(e) => {
-                                const newAttrs = selectedShape;
-                                newAttrs.radiusX = Math.ceil(Number(e.target.value));
-                                const ells = ellipses.slice();
-                                ells[ells.findIndex((el) => el.id === selectedShape?.id)] = newAttrs;
-                                setEllipses(ells);
-                            }} value={Math.ceil(selectedShape?.radiusX)} maxLength={3} rows={1} cols={3}/>
-                        </div>
-                    </div>
-
-                    <div style={style.common}>
-                        <div style={style.half}>
-                            <p style={style.text}>Размер вертикального радиуса:</p>
-                        </div>
-
-                        <div style={style.half}>
-                            <textarea style={style.textarea} onChange={(e) => {
-                                const newAttrs = selectedShape;
-                                newAttrs.radiusY = Number(e.target.value);
-                                const ells = ellipses.slice();
-                                ells[ells.findIndex((el) => el.id === selectedShape?.id)] = newAttrs;
-                                setEllipses(ells);
-                            }} value={selectedShape?.radiusY} maxLength={3} rows={1} cols={3}/>
-                        </div>
-                    </div>
-
-                    <div style={style.common}>
-                        <div style={style.half}>
-                            <p style={style.text}>Цвет эллипса:</p>
-                        </div>
-                        <div style={style.half}>
-                            <input style={style.color} onChange={(e) => {
-                                const newAttrs = selectedShape;
-                                newAttrs.fill = e.target.value;
-                                const ells = ellipses.slice();
-                                ells[ells.findIndex((el) => el.id === selectedShape?.id)] = newAttrs;
-                                setEllipses(ells);
-                            }} type={"color"} value={selectedShape?.fill}/>
-                        </div>
-                    </div>
-                </Html>
+                <TextAndTextarea
+                    y={10}
+                    text={"Вертикальный радиус:"}
+                    selectedShape={selectedShape}
+                    stage={props.stage}
+                    elems={ellipses}
+                    setElems={setEllipses}
+                    attrName={"radiusX"}
+                    attr={selectedShape.radiusX}
+                />
+                <TextAndTextarea
+                    y={10 + 60 * 1}
+                    text={"Горизонтальный радиус:"}
+                    selectedShape={selectedShape}
+                    stage={props.stage}
+                    elems={ellipses}
+                    setElems={setEllipses}
+                    attrName={"radiusY"}
+                    attr={selectedShape.radiusY}
+                />
+                <TextAndColor
+                    y={10 + 60 * 2}
+                    text={"Цвет:"}
+                    selectedShape={selectedShape}
+                    stage={props.stage}
+                    elems={ellipses}
+                    setElems={setEllipses}
+                />
             </Group>
         </React.Fragment>
     );
